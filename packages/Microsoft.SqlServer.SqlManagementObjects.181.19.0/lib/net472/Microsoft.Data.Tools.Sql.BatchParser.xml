@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Data.Tools.Sql.BatchParser</name>
+    </assembly>
+    <members>
+        <member name="M:Microsoft.Data.Tools.Sql.BatchParser.BatchParser.RaiseScriptError(System.String,Microsoft.Data.Tools.Sql.BatchParser.ScriptMessageType)">
+            <summary>
+            Called when the script parsing has errors/warnings
+            </summary>
+            <param name="message"></param>
+            <param name="messageType"></param>
+        </member>
+        <member name="M:Microsoft.Data.Tools.Sql.BatchParser.BatchParser.RaiseScriptMessage(System.String)">
+            <summary>
+            Called on parsing info message
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:Microsoft.Data.Tools.Sql.BatchParser.BatchParser.RaiseHaltParser">
+            <summary>
+            Called on parsing info message
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Tools.Sql.BatchParser.Lexer.AcceptEscapableQuotedText(System.Char)">
+            <summary>
+            This method reads ahead until the closingChar is found.  When closingChar is found,
+            the next character is checked.  If it's the same as closingChar, the character is
+            escaped and the method resumes looking for a non-escaped closingChar.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Tools.Sql.BatchParser.Lexer.AcceptQuotedText(System.Char)">
+            <summary>
+            This method reads ahead until the closingChar is found.  This method does not allow for escaping
+            of the closingChar.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Data.Tools.Sql.BatchParser.SR.BatchParser_CircularReference">
+            <summary>File '{filename}' recursively included.</summary>
+        </member>
+        <member name="M:Microsoft.Data.Tools.Sql.BatchParser.SR.FormatBatchParser_CircularReference(System.Object)">
+            <summary>File '{filename}' recursively included.</summary>
+        </member>
+        <member name="P:Microsoft.Data.Tools.Sql.BatchParser.SR.BatchParser_CommentNotTerminated">
+            <summary>Missing end comment mark '*/'.</summary>
+        </member>
+        <member name="P:Microsoft.Data.Tools.Sql.BatchParser.SR.BatchParser_IncorrectSyntax">
+            <summary>Incorrect syntax was encountered while parsing '{text}'.</summary>
+        </member>
+        <member name="M:Microsoft.Data.Tools.Sql.BatchParser.SR.FormatBatchParser_IncorrectSyntax(System.Object)">
+            <summary>Incorrect syntax was encountered while parsing '{text}'.</summary>
+        </member>
+        <member name="P:Microsoft.Data.Tools.Sql.BatchParser.SR.BatchParser_StringNotTerminated">
+            <summary>Unclosed quotation mark after the character string.</summary>
+        </member>
+        <member name="P:Microsoft.Data.Tools.Sql.BatchParser.SR.BatchParser_VariableNotDefined">
+            <summary>Variable {variableName} is not defined.</summary>
+        </member>
+        <member name="M:Microsoft.Data.Tools.Sql.BatchParser.SR.FormatBatchParser_VariableNotDefined(System.Object)">
+            <summary>Variable {variableName} is not defined.</summary>
+        </member>
+        <member name="P:Microsoft.Data.Tools.Sql.BatchParser.SR.EE_ExecutionError_CommandNotSupported">
+            <summary>Command {tokenType} is not supported.</summary>
+        </member>
+        <member name="M:Microsoft.Data.Tools.Sql.BatchParser.SR.FormatEE_ExecutionError_CommandNotSupported(System.Object)">
+            <summary>Command {tokenType} is not supported.</summary>
+        </member>
+    </members>
+</doc>

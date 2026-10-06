@@ -1,0 +1,1619 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.SqlServer.Management.SqlScriptPublish</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.IScriptPublishOptions">
+            <summary>
+            Defines settings that control the formatting of scripts and which types of objects are included
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.IScriptPublishOptions.GetSmoScriptingOptions">
+            <summary>
+            Returns the SMO ScriptingOptions represented by the current IScriptPublishOptions properties
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.IScriptPublishOptions.TargetSourceServer">
+            <summary>
+            Returns a value indicating that script target settings should be based on the version of the source SQL Server
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.IScriptPublishOptions.GetSmoScriptingOptions(System.Object)">
+            <summary>
+            Returns the SMO ScriptingOptions derived from combining the current IScriptPublishOptions properties with the version of SQL Server instance associated with the sourceObject
+            </summary>
+            <param name="sourceObject"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlQueryHandler">
+            <summary>
+            Helper class for database type and database metadata query
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlQueryHandler.#cctor">
+            <summary>
+            Static constructor
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlQueryHandler.#ctor(Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlQueryHandler.GetDatabaseObjectTypes">
+            <summary>
+            Returns database object types currently existing in the database
+            If the type does not have any object, we do not want to show the object type.
+            </summary>
+            <returns>Database type names whose objects exist</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlQueryHandler.EnumChildrenForDatabaseObjectType(Microsoft.SqlServer.Management.SqlScriptPublish.DatabaseObjectType)">
+            <summary>
+            Returns all children's object names and urns for the object type.
+            </summary>
+            <param name="objectType">Object type such as tables, views, etc</param>
+            <returns>Object names and urns for the object type</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlQueryHandler.InvalidObjectTypesForAzure(Microsoft.SqlServer.Management.Common.DatabaseEngineEdition)">
+            <summary>
+            Returns an enumeration of DatabaseObjectType that are NOT valid for the passed
+            in SMO cloud engine edition
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlQueryHandler.ValidObjectType(Microsoft.SqlServer.Management.SqlScriptPublish.SqlQueryHandler.QueryInfo)">
+            <summary>
+            Check if the passed in QueryInfo for the ObjectType is valid for the current server
+            </summary>
+            <param name="info"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlQueryHandler.InitializeSupportedObjectTypes">
+            <summary>
+            Build up the list of object types and the engine types that they are supported on.
+            This list is used to validate the list of objects returned from the EnumObjects call in the model
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlQueryHandler.QueryInfoCollection">
+            <summary>
+            A simple keyed collection
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlQueryHandler.QueryInfo">
+            <summary>
+            Internal class used to hold each the Query's for each of the possible Object Types
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlQueryHandler.QueryInfo.EngineType">
+            <summary>
+            A [Flag] represenation of engine types for easy checking
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlQueryHandler.QueryInfo.Editions">
+            <summary>
+            When supported by Azure engine type, which editions it's supported for
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlQueryHandler.QueryInfo.SmoType">
+            <summary>
+            The Type to pass to Server.IsSupportedObject
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptGenerator">
+            <summary>
+            Class that implements script generation based on a SqlScriptPublishModel
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptGenerator.NotebookWriterFactory">
+            <summary>
+            Global factory delegate for creating an ISmoScriptWriter that generates Notebook output.
+            Set this before using ScriptDestination.ToNotebook.
+            The delegate receives the output file path and returns an ISmoScriptWriter implementation.
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptGenerator.#ctor(Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel)">
+            <summary>
+            SqlScriptGenerator Constructor
+            </summary>
+            <param name="model">model data object</param>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptGenerator.GetUrnList">
+            <summary>
+            GetUrnList builds up the URN list based on the values set in this object.
+            It will either use the Transfer object to determine the list or will enumerate.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptGenerator.SetScriptingOptions(Microsoft.SqlServer.Management.Smo.ScriptingOptions)">
+             <summary>
+             Sets the scription options from the Options object to the passed in Smo scripting options object
+            
+             If the Transfer scripting options and the Scripter scripting options diverge too much then this
+             function should move into the Options class set and made virtual so that each class can update the
+             scripting options as necessary. This function really belongs there but not moving it at this time
+             to reduce unecessary code churn.
+             </summary>
+             <param name="scriptingOptions"></param>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions">
+            <summary>
+            Designer-friendly class that defines the options that can be set for publishing SQL scripts using SqlScriptPublishModel
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.ScriptCompatibilityOptions">
+            <summary>
+            Defines the compatibility level of the script feature set
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.ScriptDatabaseEngineType">
+            <summary>
+            Defines whether the script will be for on-premises SQL Server or for Azure SQL Database
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.ScriptDatabaseEngineEdition">
+            <summary>
+            Defines the edition of SQL Server for the script
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.ScriptStatisticsOptions">
+            <summary>
+            Defines options for scripting statistics
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.BooleanTypeOptions">
+            <summary>
+            Defines potential values for boolean property types
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.ScriptCreateDropOptions">
+            <summary>
+            Defines options for scripting Create, Drop, or Drop and Create
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.TypeOfDataToScriptOptions">
+            <summary>
+            Defines options for scripting schema, data, or both
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.#ctor(System.Version)">
+            <summary>
+            Constructions a SqlScriptOptions object whose destination settings are for the given SQL Server version
+            </summary>
+            <param name="version"></param>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.Copy(Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions)">
+            <summary>
+            Copies current properties to another SqlScriptOptions instance
+            </summary>
+            <param name="source"></param>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.ConvertBooleanTypeOptionToBoolean(Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.BooleanTypeOptions)">
+            <summary>
+            Converts BooleanTypeOptions type to boolean type
+            </summary>
+            <param name="option"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.ConvertBooleanToBooleanTypeOption(System.Boolean)">
+            <summary>
+            Converts boolean type to BooleanTypeOptions type
+            </summary>
+            <param name="boolValue"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.CompatibilityLevelSupportedVersionAttribute">
+            <summary>
+            Attribute for storing the minimum supported engine version for script compatibility levels.
+            This is needed because version v105 shares a major version with v100, which throws off the
+            enum offset for <see cref="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.ScriptCompatibilityOptions"/>. So, we can't do something easy
+            like adding the minimum supported version to all the enum values to get their actual version.
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.CompatibilityLevelSupportedVersionAttribute.GetOptionForVersion(System.Int32,System.Int32)">
+            <summary>
+            Gets the matching <see cref="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.ScriptCompatibilityOptions"/> value for the specified engine version.
+            </summary>
+            <param name="majorVersion">The major version number of the engine version.</param>
+            <param name="minorVersion">The minor version number of the engine version.</param>
+            <returns>The corresponding compatibility option value, or null if none match the provided version.</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.CompatibilityLevelSupportedVersionAttribute.FilterUnsupportedOptions(System.Collections.Generic.List{Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.ScriptCompatibilityOptions},System.Int32,System.Int32)">
+            <summary>
+            Filters the <see cref="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.ScriptCompatibilityOptions"/> from the provided list that
+            are not supported for the specified engine version.
+            </summary>
+            <param name="options">List of options to check.</param>
+            <param name="majorVersion">The major version number of the engine version.</param>
+            <param name="minorVersion">The minor version number of the engine version.</param>
+            <returns>The same list of options with unsupported options removed.</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.CompatibilityLevelSupportedVersionAttribute.GetAttributeForOption(Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.ScriptCompatibilityOptions)">
+            <summary>
+            Gets the <see cref="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.CompatibilityLevelSupportedVersionAttribute"/> associated with the specified <see cref="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptions.ScriptCompatibilityOptions"/> value.
+            </summary>
+            <param name="option">The compatibility option to retrieve an attribute for.</param>
+            <returns>The associated version attribute, or null if none are set for the provided option.</returns>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.OutputType">
+            <summary>
+            The type of output to create. Only one type is allowed, this enumeration exists for backward compatibility.
+            </summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Management.SqlScriptPublish.OutputType.GenerateScript">
+            <summary>
+            Generate script as text whose destination can be a file, a set of files, or the clipboard
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptDestination">
+            <summary>
+            Generate script output destination
+            </summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptDestination.ToSingleFile">
+            <summary>
+            Put all scripts in one file
+            </summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptDestination.ToClipboard">
+            <summary>
+            Put all scripts on the clipboard as one string
+            </summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptDestination.ToEditor">
+            <summary>
+            Open the scripts in an editor window
+            </summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptDestination.ToFilePerObject">
+            <summary>
+            Create one file per database object
+            </summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptDestination.ToNotebook">
+            <summary>
+            Create a Jupyter Notebook with one code cell per object
+            </summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptDestination.ToCustomWriter">
+            <summary>
+            Hands persistence responsibility to a custom ISmoScriptWriter implementation provided by the caller
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptFileType">
+            <summary>
+            Generate script unicode, ansi, and explicit utf8 type
+            </summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptFileType.Unicode">
+            <summary>
+            Encode in UTF-16
+            </summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptFileType.Ansi">
+            <summary>
+            Encode in ANSI using the default code page
+            </summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptFileType.Utf8">
+            <summary>
+            Encode in UTF-8
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptFileMode">
+            <summary>
+            Generate script file overwrite option
+            </summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptFileMode.Overwrite">
+            <summary>
+            Overwrite existing files
+            </summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptFileMode.Append">
+            <summary>
+            Append contents to existing files
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.DatabaseObjectType">
+            <summary>
+            Enum for database object types
+            To support localized description, it uses LocalizedEnumConverter.
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.ResultType">
+            <summary>
+            Result enum type
+            To support localized description, it uses LocalizedEnumConverter.
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.LocalizedEnumConverter">
+            <summary>
+            Convert enum string to localized display string
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishException">
+            <summary>
+            Exception that is raised when script generation fails
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishException.#ctor(System.String)">
+            <summary>
+            Constructs a new SqlScriptPublishException with the given message
+            </summary>
+            <param name="message"/>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishException.#ctor(System.String,System.Exception)">
+            <summary>
+            Constructs a new SqlScriptPublishException with the given message and inner exception
+            </summary>
+            <param name="message" />
+            <param name="innerException" />
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel">
+            <summary>
+            Class for describing the set of database objects to script and how to script them
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.#ctor(Microsoft.SqlServer.Management.Common.SqlConnectionInfo,System.String,Microsoft.SqlServer.Management.SqlScriptPublish.IScriptPublishOptions)">
+            <summary>
+            Constructor for SSMS context.
+            </summary>
+            <param name="sqlConnectionInfo">SQL connection info</param>
+            <param name="databaseName">database name</param>
+            <param name="shellScriptingOptions">Default shell scripting options</param>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.#ctor(System.String)">
+            <summary>
+            Constructor with connection string (VS/Powershell)
+            </summary>
+            <param name="connectionString">connection string</param>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.ServerName">
+            <summary>
+            Server name
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.DatabaseName">
+            <summary>
+            Currently selected database name
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.SelectedObjects">
+            <summary>
+            Object list for scripting that user selected
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.ScriptAllObjects">
+            <summary>
+            Flag indicating if we should script the entire database
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.SkipCreateDatabase">
+            <summary>
+            Flag indicating if we should skip the create database statement
+            Normally this is set based on scriptAllObjects and EngineType
+            but there are cases where it isn't desired, mostly testing.
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.OutputType">
+            <summary>
+            Type for generate/publish script
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.AdvancedOptions">
+            <summary>
+            Advanced scripting/publishing options
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.RawScript">
+            <summary>
+            Get/sets raw script content which is used for clipboard/editor.
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.AllowSystemObjects">
+            <summary>
+            Gets/sets the option to script system objects
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.GenerateScript(Microsoft.SqlServer.Management.SqlScriptPublish.ScriptOutputOptions)">
+            <summary>
+            Generate scripts to file, clipboard, or query window.
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.GetDatabaseObjectTypes">
+            <summary>
+            Returns eligible database object type names.
+            </summary>
+            <returns>Database object type names</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.EnumChildrenForDatabaseObjectType(Microsoft.SqlServer.Management.SqlScriptPublish.DatabaseObjectType)">
+            <summary>
+            Returns all children's object names and urns for the object type.
+            </summary>
+            <param name="objectType">Object type such as tables, views, etc</param>
+            <returns>Object names and urns for the object type</returns>
+        </member>
+        <member name="E:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.ScriptProgress">
+            <summary>
+            Progress event for generate or publish script
+            </summary>
+        </member>
+        <member name="E:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.ScriptError">
+            <summary>
+            Error event for generate or publish script
+            </summary>
+        </member>
+        <member name="E:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.ScriptItemsCollected">
+            <summary>
+            Database object items are all discovered
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.Server">
+            <summary>
+            SMO server object
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.ShellScriptingOptions">
+            <summary>
+            Shell scripting options
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.RefreshDatabaseCache">
+            <summary>
+            Refresh database object containers (such as Tables, Views, etc.)
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptPublishModel.ValidateUrnList(System.Collections.Generic.IEnumerable{Microsoft.SqlServer.Management.Sdk.Sfc.Urn})">
+            <summary>
+            Checks the passed in URN list to make sure it is valid for the target server
+            if not it throws an exception
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptOutputOptions">
+            <summary>
+            Output options for Scripting
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptOutputOptions.ScriptDestination">
+            <summary>
+            Generate script output destination
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptOutputOptions.SaveFileType">
+            <summary>
+            Generate script unicode/ansi type
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptOutputOptions.SaveFileMode">
+            <summary>
+            Generate script file overwrite option. If ScriptDestination is set to ToNotebook, this
+            property is ignored and any existing file will be overwritten.
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptOutputOptions.SaveFileName">
+            <summary>
+            Output file name for save file option
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptOutputOptions.Indented">
+            <summary>
+            For file types that support it, whether to emit 
+            human-friendly formatting instead of compacted text
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptOutputOptions.CustomSmoScriptWriter">
+            <summary>
+            When ScriptDestination is set to ToCustomWriter, provides the ISmoScriptWriter implementation.
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptEventArgs">
+            <summary>
+            Script event args for progress and error events
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.ScriptItemsArgs">
+            <summary>
+            Script Urn items args
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.SqlTransferOptions">
+            <summary>
+            TransferOptions is the set of options that are unique to the ScriptTransfer task in SMO
+            It is derived from the SqlScriptOptions for all common options and behavior
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.SqlScriptPublish.TableSelectStatement">
+            <summary>
+            Gets select statement for a table
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.TableSelectStatement.#ctor(Microsoft.SqlServer.Management.Smo.Table)">
+            <summary>
+            Creates an instance of TableSelect
+            </summary>
+            <param name="table">Table whose data is to be enumerated as INSERT strings</param>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.TableSelectStatement.HasUserDefinedType">
+            <summary>
+            Returns whether or not we have a user defined type.
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.TableSelectStatement.HasWritableColumns">
+            <summary>
+            Returns whether or not there's anything to be scripted from this table.
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.TableSelectStatement.TableName">
+            <summary>
+            Returns the table name
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.TableSelectStatement.GetSelectStatement">
+            <summary>
+            Returns a SqlBulkCopy object representing the data
+            for the table.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException">
+            If there are no Writable column in the table
+            </exception>
+            
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.General">
+            <summary>General</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.TableView">
+            <summary>Table/View Options</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.OptionsLabel">
+            <summary>&amp;Options</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishingOptions">
+            <summary>Publishing Options</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.TrueText">
+            <summary>True</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FalseText">
+            <summary>False</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptUseDatabase">
+            <summary>Script USE DATABASE</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Generateusedatabase">
+            <summary>Generate USE DATABASE statement.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptLogins">
+            <summary>Script Logins</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Generatescriptfordatabaselogins">
+            <summary>Script all logins available on the server. Passwords will not be scripted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptObjectLevelPermissions">
+            <summary>Script Object-Level Permissions</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Generateobjectlevelpermissions">
+            <summary>Generate object-level permissions.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishObjectLevelPermissions">
+            <summary>Publish Object-Level Permissions</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishDObjectLevelPermissions">
+            <summary>Publish object-level permissions</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptCreate">
+            <summary>Script CREATE</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptDrop">
+            <summary>Script DROP</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptCreateDrop">
+            <summary>Script DROP and CREATE</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptCreateDropDescription">
+            <summary>Script Object CREATE/DROP statements.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.TypesOfDataToScriptDesc">
+            <summary>Generates script that contains schema only or schema and data.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.TypesOfDataToScript">
+            <summary>Types of data to script</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DataOnly">
+            <summary>Data only</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.SchemaOnly">
+            <summary>Schema only</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.SchemaAndData">
+            <summary>Schema and data</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.CreateMode">
+            <summary>Generate Object CREATE statements.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DropMode">
+            <summary>Generate Object DROP statements.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptForDependentObjects">
+            <summary>Generate Script for Dependent Objects</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Generatescriptfordependentobjectsofeachtablescripted">
+            <summary>Generate script for dependent objects for each object scripted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishForDependentObjects">
+            <summary>Publish Dependent Objects</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Publishfordependentobjectsofeachtablescripted">
+            <summary>Publish dependent objects for each object that is published.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.IncludeDescriptiveHeaders">
+            <summary>Include Descriptive Headers</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Includedescriptiveheadersforeachtablescripted">
+            <summary>Include descriptive headers for each object scripted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.IncludeScriptingParametersHeader">
+            <summary>Include Scripting Parameters Header</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.IncludeScriptingParametersHeaderDescription">
+            <summary>Include header containing information about the scripting parameters used.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ContinueScriptingOnError">
+            <summary>Continue scripting on Error</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Continuescriptifanerroroccuredorotherwisestop">
+            <summary>Continue to script if an error occurs. Otherwise, stop.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.AppendToFile">
+            <summary>Append to File</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Appendtofilethegeneratedscript">
+            <summary>Append the generated script to a file.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptExtendedProperties">
+            <summary>Script Extended Properties</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Scriptextendedpropertiesforeachtablescripted">
+            <summary>Script the Extended Properties for each object scripted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishExtendedProperties">
+            <summary>Publish Extended Properties</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Publishextendedpropertiesforeachtablescripted">
+            <summary>Publish the Extended Properties for each object that is scripted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptOwnerForTheObjects">
+            <summary>Script owner for the objects.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptOwner">
+            <summary>Script Owner</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Prefixschemaforobjects">
+            <summary>Prefix object names with the object schema.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.SchemaQualify">
+            <summary>Schema qualify object names.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.IncludeIfNotExists">
+            <summary>Check for object existence</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Scriptobjectswithifnotexistoption">
+            <summary>Check that an object with the given name exists before dropping or altering or that an object with the given name does not exist before creating.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptCollation">
+            <summary>Script Collation</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Scriptobjectswithcollation">
+            <summary>Script the objects that use collation.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishCollation">
+            <summary>Publish Collation</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Publishobjectswithcollation">
+            <summary>Publish the objects that use collation.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Default">
+            <summary>Script Defaults</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptChangeTracking">
+            <summary>Script Change Tracking</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptChangeTrackingInformation">
+            <summary>Scripts the change tracking information.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptDefaults">
+            <summary>Script the default values.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptDataCompression">
+            <summary>Script Data Compression Options</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptXmlCompression">
+            <summary>Script Xml Compression Options</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptDataCompressionInformation">
+            <summary>Scripts the data compression information.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptXmlCompressionInformation">
+            <summary>Scripts the xml compression information.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishDefault">
+            <summary>Publish Defaults</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishDefaults">
+            <summary>Publish the default values.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Onlyscript70compatiblefeaturesforeachtablescripted">
+            <summary>Generate script only for SQL Server 7.0 compatible features for each object scripted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptIndexes">
+            <summary>Script Indexes</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Scriptindexesforeachtablescripted">
+            <summary>Script the indexes (including XML and clustered indexes) for each table or indexed view scripted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishIndexes">
+            <summary>Publish Indexes</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Publishindexesforeachtablescripted">
+            <summary>Publish the indexes for each table or indexed view that is published. This includes XML and clustered indexes.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptFullTextIndexes">
+            <summary>Script Full-Text Indexes</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Scriptfulltextindexesforeachtablescripted">
+            <summary>Script the full-text indexes for each table or indexed view scripted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishFullTextIndexes">
+            <summary>Publish Full-Text Indexes</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Publishfulltextindexesforeachtablescripted">
+            <summary>Publish the full-text indexes for each table or indexed view that is published.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptTriggers">
+            <summary>Script Triggers</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Scripttriggersforeachtablescripted">
+            <summary>Script the triggers for each table or view scripted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishTriggers">
+            <summary>Publish Triggers</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Publishtriggersforeachtablescripted">
+            <summary>Publish the triggers for each table or view that is published.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptPrimaryKeys">
+            <summary>Script Primary Keys</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Scriptprimarykeysforeachtablescripted">
+            <summary>Script the primary keys for each table or view scripted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishPrimaryKeys">
+            <summary>Publish Primary Keys</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Publishprimarykeysforeachtablescripted">
+            <summary>Publish the primary keys for each table or view that is published.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptUniqueKeys">
+            <summary>Script Unique Keys</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Scriptuniqueskeysforeachtablescripted">
+            <summary>Script the unique keys for each table or view scripted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishUniqueKeys">
+            <summary>Publish Unique Keys</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Publishuniqueskeysforeachtablescripted">
+            <summary>Publish the unique keys for each table or view that is published.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptForeignKeys">
+            <summary>Script Foreign Keys</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Scriptforeignkeysforeachtablescripted">
+            <summary>Script the foreign keys for each table scripted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishForeignKeys">
+            <summary>Publish Foreign Keys</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Publishforeignkeysforeachtablescripted">
+            <summary>Publish the foreign keys for each table that is published.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptCheckConstraints">
+            <summary>Script Check Constraints</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Scriptcheckconstraintsforeachtablescripted">
+            <summary>Script the check constraints for each table or view scripted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishCheckConstraints">
+            <summary>Publish CHECK Constraints</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Publishcheckconstraintsforeachtablescripted">
+            <summary>Publish CHECK constraints for each table or view that is published.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptConvertUDDT">
+            <summary>Convert UDDTs to Base Types</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Generateconvertuddt">
+            <summary>Convert user-defined data types to base types.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptStatistics">
+            <summary>Script Statistics</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.generatescriptstatistics">
+            <summary>Script statistics, and optionally include histograms, for each selected table or view.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptStatisticsNone">
+            <summary>Do not script statistics</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptStatisticsDDL">
+            <summary>Script statistics</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptStatisticsAll">
+            <summary>Script statistics and histograms</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishStatistics">
+            <summary>Publish Statistics</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Publishgeneratescriptstatistics">
+            <summary>Publish statistics, and optionally include histograms, for each table or view that is selected.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishStatisticsNone">
+            <summary>Do not publish statistics</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishStatisticsDDL">
+            <summary>Publish statistics</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishStatisticsAll">
+            <summary>Publish statistics and histograms</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.IncludeVarDecimal">
+            <summary>Script Vardecimal Options</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.IncludeVarDecimalDescription">
+            <summary>Script options to set vardecimal storage format.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.Bindings">
+            <summary>Script Bindings</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.BindingsDescription">
+            <summary>Script options to set bindings option.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishIncludeVarDecimal">
+            <summary>Publish Vardecimal Options</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishIncludeVarDecimalDescription">
+            <summary>Publish options to set vardecimal storage format.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptDriIncludeSystemNames">
+            <summary>Include system constraint names</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.generateDriIncludeSystemNames">
+            <summary>Include system generated constraint names to enforce declarative referential integrity.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptAnsiPadding">
+            <summary>ANSI Padding</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.generateAnsiPadding">
+            <summary>Generates ANSI padding statements.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ScriptDatabaseCreate">
+            <summary>Script Database Create</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.genreatescriptdatabasecreate">
+            <summary>Generate the CREATE DATABASE script when it scripts the whole database.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.UseTransactionForPublish">
+            <summary>Publish by using a transaction.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.UseTransactionForPublishDesc">
+            <summary>Publish to provider atomically by using a transaction.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateCreateCommand">
+            <summary>Generate CREATE Command</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateDropCommand">
+            <summary>Generate DROP Command</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.CompatibleFeatures">
+            <summary>Script for Server Version</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.CompatibleFeaturesDescription">
+            <summary>Script only features compatible with the specified version of SQL Server</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishCompatibleFeatures">
+            <summary>Publish for Server Version</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishCompatibleFeaturesDescription">
+            <summary>Publish only the features that are compatible with the specified version of SQL Server.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.OnlyScript90CompatibleFeatures">
+            <summary>SQL Server 2005</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.OnlyScript100CompatibleFeatures">
+            <summary>SQL Server 2008</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.OnlyScript105CompatibleFeatures">
+            <summary>SQL Server 2008 R2</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.OnlyScript110CompatibleFeatures">
+            <summary>SQL Server 2012</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.OnlyScript120CompatibleFeatures">
+            <summary>SQL Server 2014</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.OnlyScript130CompatibleFeatures">
+            <summary>SQL Server 2016</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.OnlyScript140CompatibleFeatures">
+            <summary>SQL Server 2017</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.OnlyScript150CompatibleFeatures">
+            <summary>SQL Server 2019</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.OnlyScript160CompatibleFeatures">
+            <summary>SQL Server 2022</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.OnlyScript170CompatibleFeatures">
+            <summary>SQL Server 2025</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.OnlyScript180CompatibleFeatures">
+            <summary>SQL Server vNext</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.TargetEngineType">
+            <summary>Script for the database engine type</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.TargetEngineTypeDescription">
+            <summary>Script only features compatible with the specified SQL Server database engine type.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.TargetEngineEdition">
+            <summary>Script for the database engine edition</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.TargetEngineEditionDescription">
+            <summary>Script only features compatible with the specified SQL Server database engine edition.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.SingleInstanceEngineType">
+            <summary>Stand-alone instance</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.SqlAzureEngineType">
+            <summary>Microsoft Azure SQL Database</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PersonalEdition">
+            <summary>Microsoft SQL Server Personal Edition</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.StandardEdition">
+            <summary>Microsoft SQL Server Standard Edition</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.EnterpriseEdition">
+            <summary>Microsoft SQL Server Enterprise Edition</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ExpressEdition">
+            <summary>Microsoft SQL Server Express Edition</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.SqlAzureDatabaseEdition">
+            <summary>Microsoft Azure SQL Database Edition</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.SqlDataWarehouseEdition">
+            <summary>Microsoft Azure Synapse Analytics dedicated SQL pools Edition</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.StretchEdition">
+            <summary>Microsoft SQL Server Stretch Database Edition</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.SqlServerManagedInstanceEdition">
+            <summary>Microsoft Azure SQL Database Managed Instance Edition</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.SqlServerOnDemandEdition">
+            <summary>Microsoft Azure Synapse Analytics serverless SQL pool on-demand Edition</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.SqlDatabaseEdgeEdition">
+            <summary>Microsoft Azure SQL Edge Edition</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.SqlAzureArcManagedInstanceEdition">
+            <summary>Microsoft Azure Arc SQL Managed Instance Edition</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.IncludeUnsupportedStatements">
+            <summary>Include unsupported statements</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.IncludeUnsupportedStatementsDescription">
+            <summary>Include statements in the script that are not supported on the specified SQL Server database engine type.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptProgressTitle">
+            <summary>Generate Script Progress</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishProgressTitle">
+            <summary>Publish Database Progress</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptTable">
+            <summary>Table</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptView">
+            <summary>View</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptSP">
+            <summary>Stored procedure</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptUdf">
+            <summary>User-defined function</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptUddt">
+            <summary>User-defined data type</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptUdtt">
+            <summary>User-defined table type</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptDefault">
+            <summary>Default</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptRule">
+            <summary>Rule</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptAppRole">
+            <summary>Application role</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptAssembly">
+            <summary>Assembly</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptDatabaseTrigger">
+            <summary>Database (DDL) trigger</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptDatabaseRole">
+            <summary>Database role</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptSynonym">
+            <summary>Synonym</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptUser">
+            <summary>User</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptXMLSchema">
+            <summary>XML schema collection</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptSchema">
+            <summary>Schema</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptDatabase">
+            <summary>Database</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptPlanGuide">
+            <summary>Plan guide</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptProgressDiscovery">
+            <summary>Determining objects in database '{databaseName}' that will be scripted.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatGenerateScriptProgressDiscovery(System.Object)">
+            <summary>Determining objects in database '{databaseName}' that will be scripted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptUserDefinedType">
+            <summary>User-defined type</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptFullTextCatalog">
+            <summary>Full text catalog</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptUserDefinedAggregate">
+            <summary>User-defined aggregate</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptDBNotFound">
+            <summary>Database '{databaseName}' is unavailable.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatGenerateScriptDBNotFound(System.Object)">
+            <summary>Database '{databaseName}' is unavailable.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptNoObjects">
+            <summary>There are no objects in database '{databaseName}' of the types scriptable by this wizard.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatGenerateScriptNoObjects(System.Object)">
+            <summary>There are no objects in database '{databaseName}' of the types scriptable by this wizard.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptFileExists">
+            <summary>The file '{fileName}' already exists. Do you want to overwrite this file?</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatGenerateScriptFileExists(System.Object)">
+            <summary>The file '{fileName}' already exists. Do you want to overwrite this file?</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptInvalidDirectory">
+            <summary>The path name '{directoryName}' is not valid. The path may not exist, you may not have permissions to access that folder, or the disk may be full or write-protected. Provide a valid path name to continue.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatGenerateScriptInvalidDirectory(System.Object)">
+            <summary>The path name '{directoryName}' is not valid. The path may not exist, you may not have permissions to access that folder, or the disk may be full or write-protected. Provide a valid path name to continue.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenarateScriptInvalidFile">
+            <summary>The path or file name '{filename}' is not valid. The path may not exist, you may not have permissions to create a file in that folder, or the disk may be full or write-protected. Provide a valid path and file name to continue.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatGenarateScriptInvalidFile(System.Object)">
+            <summary>The path or file name '{filename}' is not valid. The path may not exist, you may not have permissions to create a file in that folder, or the disk may be full or write-protected. Provide a valid path and file name to continue.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.GenerateScriptStatsWarning">
+            <summary>Scripting statistics and histograms can significantly increase the time that is required to generate the scripts. Additionally this will increase the size of the resulting script file.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderListTitle">
+            <summary>Hosting Providers</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ConfiguredProviders">
+            <summary>&amp;Configured providers:</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAAConfiguredProviders">
+            <summary>Configured providers:</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderName">
+            <summary>Name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.WebServiceAddress">
+            <summary>Web service address</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.NewText">
+            <summary>&amp;New...</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.EditText">
+            <summary>&amp;Edit...</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.TestText">
+            <summary>&amp;Test</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DeleteText">
+            <summary>&amp;Delete</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAANewText">
+            <summary>New...</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAAEditText">
+            <summary>Edit...</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAATestText">
+            <summary>Test</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAADeleteText">
+            <summary>Delete</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDeleteMessage">
+            <summary>This command will remove the selected provider.  Continue?</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDeleteTitle">
+            <summary>Delete provider</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.TestTitleSuccess">
+            <summary>Test successful</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.TestSuccessMessage">
+            <summary>The connection to {providerName} was successful.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatTestSuccessMessage(System.Object)">
+            <summary>The connection to {providerName} was successful.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.TestTitleFailure">
+            <summary>Test failed</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.TestFailureMessage">
+            <summary>{providerName} could not be contacted.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatTestFailureMessage(System.Object)">
+            <summary>{providerName} could not be contacted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.TestFailureUsernamePasswordMessage">
+            <summary>The username and password for {providerName} are incorrect.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatTestFailureUsernamePasswordMessage(System.Object)">
+            <summary>The username and password for {providerName} are incorrect.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderListSaveChangeMessage">
+            <summary>Providers have changed.
+            Do you want to save the changes?</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderListSaveChangeTitle">
+            <summary>Save Changes</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ERROR_SaveFailedTitle">
+            <summary>Saving Error</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ERROR_DeleteFailedTitle">
+            <summary>Deleting Error</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAAButtonPanel">
+            <summary>Button Panel</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailTitle">
+            <summary>Provider configuration for {providerName}</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatProviderDetailTitle(System.Object)">
+            <summary>Provider configuration for {providerName}</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailProviderName">
+            <summary>Na&amp;me</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAAProviderDetailProviderName">
+            <summary>Name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailWebAdd">
+            <summary>&amp;Web service address</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAAProviderDetailWebAdd">
+            <summary>Web service address</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailWebSerAuth">
+            <summary>Web service authentication</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailWebSerUser">
+            <summary>&amp;User name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailWebSerPassword">
+            <summary>&amp;Password</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailWebSerSavePassword">
+            <summary>&amp;Save password</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailDatabaseGroup">
+            <summary>&amp;Available databases</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.SetAsDefaultText">
+            <summary>Set as de&amp;fault</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAAProviderDetailWebSerUser">
+            <summary>User name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAAProviderDetailWebSerPassword">
+            <summary>Password</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAAProviderDetailWebSerSavePassword">
+            <summary>Save password</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAAProviderDetailDatabaseGroup">
+            <summary>Available databases</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAASetAsDefaultText">
+            <summary>Set as default</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DownloadConfigurationsText">
+            <summary>Download configurations</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailDeleteMessage">
+            <summary>This command will remove the selected database from the list.  Continue?</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailDeleteTitle">
+            <summary>Remove database</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailConfirmDownloadTitle">
+            <summary>Download Database Configurations</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailConfirmDownloadText">
+            <summary>This command will connect to the hosting provider and download database configuration information.
+            If the operation is successful, existing database configurations will be deleted.
+            
+            Continue?</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailDownloadSucceedTitle">
+            <summary>Download Succeeded</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailDownloadSucceedText">
+            <summary>Database configurations were downloaded successfully.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailDownloadFailedTitle">
+            <summary>Download Failed</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailDownloadFailedNotConfigured">
+            <summary>Database configurations could not be downloaded.
+            The hosting provider has not been configured to support this operation.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailDownloadFailedCannotConnect">
+            <summary>{providerName} could not be contacted.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatProviderDetailDownloadFailedCannotConnect(System.Object)">
+            <summary>{providerName} could not be contacted.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailDownloadFailedUserPassword">
+            <summary>The user name and password for {providerName} are incorrect.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatProviderDetailDownloadFailedUserPassword(System.Object)">
+            <summary>The user name and password for {providerName} are incorrect.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailSaveChangeMessage">
+            <summary>Provider {providerName} has changed.
+            Do you want to save the changes?</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatProviderDetailSaveChangeMessage(System.Object)">
+            <summary>Provider {providerName} has changed.
+            Do you want to save the changes?</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailSaveChangeTitle">
+            <summary>Save Changes</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailEmptyProviderNameMessage">
+            <summary>{fieldName} is required.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatProviderDetailEmptyProviderNameMessage(System.Object)">
+            <summary>{fieldName} is required.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailEmptyProviderNameMessageTitle">
+            <summary>Error</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.ProviderDetailNewProvider">
+            <summary>new provider</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DatabaseDetailTitle">
+            <summary>Database {databaseName}</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatDatabaseDetailTitle(System.Object)">
+            <summary>Database {databaseName}</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DatabaseDetailDatabaseName">
+            <summary>&amp;Database name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DatabaseDetailServerName">
+            <summary>Se&amp;rver name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAADatabaseDetailDatabaseName">
+            <summary>Database name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAADatabaseDetailServerName">
+            <summary>Server name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DatabaseDetailAuthentication">
+            <summary>Database &amp;authentication</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DatabaseDetailUserName">
+            <summary>&amp;User name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DatabaseDetailPassword">
+            <summary>&amp;Password</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DatabaseDetailSavePassword">
+            <summary>&amp;Save password</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAADatabaseDetailUserName">
+            <summary>User name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAADatabaseDetailPassword">
+            <summary>Password</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAADatabaseDetailSavePassword">
+            <summary>Save password</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DatabaseDetailSaveChangeMessage">
+            <summary>Database {databaseName} has changed.
+            Do you want to save the changes?</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatDatabaseDetailSaveChangeMessage(System.Object)">
+            <summary>Database {databaseName} has changed.
+            Do you want to save the changes?</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DatabaseDetailSaveChangeTitle">
+            <summary>Save Changes</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DatabaseDetailEmptyDatabaseNameMessage">
+            <summary>{fieldName} is required.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.FormatDatabaseDetailEmptyDatabaseNameMessage(System.Object)">
+            <summary>{fieldName} is required.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DatabaseDetailEmptyDatabaseNameMessageTitle">
+            <summary>Error</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.DatabaseDetailNewDatabase">
+            <summary>new database</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.RemoteCreditDialogTitle">
+            <summary>Enter User Credentials</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.RemoteCreditSubTitle">
+            <summary>Enter username and password:</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.RemoteCreditProviderGroupText">
+            <summary>Provider</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.RemoteCreditDatabaseGroupText">
+            <summary>Remote database</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.RemoteCreditProviderName">
+            <summary>Name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.RemoteCreditWebAdd">
+            <summary>Web service address</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.RemoteCreditWebSerUser">
+            <summary>&amp;User name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.RemoteCreditWebSerPassword">
+            <summary>&amp;Password</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAARemoteCreditWebSerUser">
+            <summary>User name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAARemoteCreditWebSerPassword">
+            <summary>Password</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.RemoteCreditDatabaseName">
+            <summary>Database name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.RemoteCreditServerName">
+            <summary>Server name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.RemoteCreditUserName">
+            <summary>Use&amp;r name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.RemoteCreditPassword">
+            <summary>Pass&amp;word</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAARemoteCreditUserName">
+            <summary>MSAA User name</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.MSAARemoteCreditPassword">
+            <summary>MSAA Password</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishOutputOptionTitle">
+            <summary>Select an Output Location</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SqlScriptOptionsSR.PublishOutputOptionSubTitle">
+            <summary>Select the database and Web service that you want to publish the database to.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.Table">
+            <summary>Tables</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.View">
+            <summary>Views</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.StoredProcedure">
+            <summary>Stored Procedures</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.UserDefinedFunction">
+            <summary>User-Defined Functions</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.UserDefinedDataType">
+            <summary>User-Defined Data Types</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.UserDefinedTableType">
+            <summary>User-Defined Table Types</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.SecurityPolicy">
+            <summary>Security Policies</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.Default">
+            <summary>Defaults</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.Rule">
+            <summary>Rules</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.ApplicationRole">
+            <summary>Application Roles</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.SqlAssembly">
+            <summary>SQL Assemblies</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.DdlTrigger">
+            <summary>DDL Triggers</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.DatabaseRole">
+            <summary>Database Roles</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.Synonym">
+            <summary>Synonyms</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.User">
+            <summary>Users</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.XmlSchemaCollection">
+            <summary>Xml Schema Collections</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.Schema">
+            <summary>Schemas</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.PlanGuide">
+            <summary>Plan Guides</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.UserDefinedType">
+            <summary>User-DefinedTypes</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.UserDefinedAggregate">
+            <summary>User-Defined Aggregates</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.FullTextCatalog">
+            <summary>FullText Catalogs</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.None">
+            <summary>Not Run</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.InProgress">
+            <summary>In progress</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.Success">
+            <summary>Success</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.Warning">
+            <summary>Warning</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.Error">
+            <summary>Error</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.UnableToConnect">
+            <summary>Unable to connect to {server}.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SR.FormatUnableToConnect(System.Object)">
+            <summary>Unable to connect to {server}.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.UnableToFind">
+            <summary>Unable to find {objectName}.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SR.FormatUnableToFind(System.Object)">
+            <summary>Unable to find {objectName}.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.ValueIsNull">
+            <summary>'{str}' is null.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SR.FormatValueIsNull(System.Object)">
+            <summary>'{str}' is null.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.ValueIsNullOrEmpty">
+            <summary>'{str}' is null or empty.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SR.FormatValueIsNullOrEmpty(System.Object)">
+            <summary>'{str}' is null or empty.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.InvalidObjectType">
+            <summary>Invalid object type '{typeName}'.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SR.FormatInvalidObjectType(System.Object)">
+            <summary>Invalid object type '{typeName}'.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.InvalidObjectTypeForVersion">
+            <summary>Object '{name}' of type '{type}' is not valid for the selected database engine type.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SR.FormatInvalidObjectTypeForVersion(System.Object,System.Object)">
+            <summary>Object '{name}' of type '{type}' is not valid for the selected database engine type.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.ERROR_ScriptingFailed">
+            <summary>An error occurred while scripting the objects.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.ERROR_NotebookWriterNotRegistered">
+            <summary>No Notebook writer factory has been registered. Call SqlScriptGenerator.NotebookWriterFactory to register an ISmoScriptWriter implementation for Notebook output before using ScriptDestination.ToNotebook..</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.InvalidScriptPreText">
+            <summary>/* * * *
+            The following script is not valid for the specified SQL Server database engine type and must be updated.
+            * * * */</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.InvalidScriptPostText">
+            <summary>/* * * *
+            End of invalid script block.
+            * * * */</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.ERROR_PublishDataInternalError">
+            <summary>An error occurred while trying to publish data for table {tableName}.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SR.FormatERROR_PublishDataInternalError(System.Object)">
+            <summary>An error occurred while trying to publish data for table {tableName}.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.ERROR_PublishDataUdtError">
+            <summary>Cannot publish data for table {tableName} with user defined type.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SR.FormatERROR_PublishDataUdtError(System.Object)">
+            <summary>Cannot publish data for table {tableName} with user defined type.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.ERROR_RowExceedsMaxRequestSize">
+            <summary>Row number {rowNumber} in table {tableName} is longer than the max request size allowed by the web service.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SR.FormatERROR_RowExceedsMaxRequestSize(System.Object,System.Object)">
+            <summary>Row number {rowNumber} in table {tableName} is longer than the max request size allowed by the web service.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.ERROR_PublishScriptFailed">
+            <summary>An error occurred while trying to publish the following script:{script}</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SR.FormatERROR_PublishScriptFailed(System.Object)">
+            <summary>An error occurred while trying to publish the following script:{script}</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.ERROR_UnsupportedDatabaseEngineEditionAndDatabaseEngineTypeOptionCombination">
+            <summary>The database engine edition '{databaseEngineEdition}' is not supported on database engine type '{databaseEngineType}'.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SR.FormatERROR_UnsupportedDatabaseEngineEditionAndDatabaseEngineTypeOptionCombination(System.Object,System.Object)">
+            <summary>The database engine edition '{databaseEngineEdition}' is not supported on database engine type '{databaseEngineType}'.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.ERROR_UnexpectedDatabaseEngineTypeDetected">
+            <summary>Unexpected database engine type detected '{databaseEngineType}'.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SR.FormatERROR_UnexpectedDatabaseEngineTypeDetected(System.Object)">
+            <summary>Unexpected database engine type detected '{databaseEngineType}'.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.SqlScriptPublish.SR.ERROR_UnexpectedDatabaseEngineEditionDetected">
+            <summary>Unexpected database engine edition detected '{databaseEngineEdition}'.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.SqlScriptPublish.SR.FormatERROR_UnexpectedDatabaseEngineEditionDetected(System.Object)">
+            <summary>Unexpected database engine edition detected '{databaseEngineEdition}'.</summary>
+        </member>
+    </members>
+</doc>

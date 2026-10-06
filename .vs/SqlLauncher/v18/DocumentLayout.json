@@ -1,0 +1,125 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\aleja\\Desktop\\Otros\\SQL_launcher\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0CA9D527-EB84-4110-83B5-BB5FE9FF1202}|SqlLauncher\\SqlLauncher.csproj|c:\\users\\aleja\\desktop\\otros\\sql_launcher\\sqllauncher\\frmstepeditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0CA9D527-EB84-4110-83B5-BB5FE9FF1202}|SqlLauncher\\SqlLauncher.csproj|solutionrelative:sqllauncher\\frmstepeditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0CA9D527-EB84-4110-83B5-BB5FE9FF1202}|SqlLauncher\\SqlLauncher.csproj|c:\\users\\aleja\\desktop\\otros\\sql_launcher\\sqllauncher\\frmscheduleeditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0CA9D527-EB84-4110-83B5-BB5FE9FF1202}|SqlLauncher\\SqlLauncher.csproj|solutionrelative:sqllauncher\\frmscheduleeditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0CA9D527-EB84-4110-83B5-BB5FE9FF1202}|SqlLauncher\\SqlLauncher.csproj|c:\\users\\aleja\\desktop\\otros\\sql_launcher\\sqllauncher\\frmlanzadera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0CA9D527-EB84-4110-83B5-BB5FE9FF1202}|SqlLauncher\\SqlLauncher.csproj|solutionrelative:sqllauncher\\frmlanzadera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0CA9D527-EB84-4110-83B5-BB5FE9FF1202}|SqlLauncher\\SqlLauncher.csproj|c:\\users\\aleja\\desktop\\otros\\sql_launcher\\sqllauncher\\frmjobeditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0CA9D527-EB84-4110-83B5-BB5FE9FF1202}|SqlLauncher\\SqlLauncher.csproj|solutionrelative:sqllauncher\\frmjobeditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0CA9D527-EB84-4110-83B5-BB5FE9FF1202}|SqlLauncher\\SqlLauncher.csproj|c:\\users\\aleja\\desktop\\otros\\sql_launcher\\sqllauncher\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{0CA9D527-EB84-4110-83B5-BB5FE9FF1202}|SqlLauncher\\SqlLauncher.csproj|solutionrelative:sqllauncher\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0CA9D527-EB84-4110-83B5-BB5FE9FF1202}|SqlLauncher\\SqlLauncher.csproj|C:\\Users\\aleja\\Desktop\\Otros\\SQL_launcher\\sqllauncher\\frmlanzadera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{0CA9D527-EB84-4110-83B5-BB5FE9FF1202}|SqlLauncher\\SqlLauncher.csproj|solutionrelative:sqllauncher\\frmlanzadera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FrmStepEditor.cs",
+              "DocumentMoniker": "C:\\Users\\aleja\\Desktop\\Otros\\SQL_launcher\\SqlLauncher\\FrmStepEditor.cs",
+              "RelativeDocumentMoniker": "SqlLauncher\\FrmStepEditor.cs",
+              "ToolTip": "C:\\Users\\aleja\\Desktop\\Otros\\SQL_launcher\\SqlLauncher\\FrmStepEditor.cs",
+              "RelativeToolTip": "SqlLauncher\\FrmStepEditor.cs",
+              "ViewState": "AgIAAE0AAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-06T09:29:57.365Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FrmScheduleEditor.cs",
+              "DocumentMoniker": "C:\\Users\\aleja\\Desktop\\Otros\\SQL_launcher\\SqlLauncher\\FrmScheduleEditor.cs",
+              "RelativeDocumentMoniker": "SqlLauncher\\FrmScheduleEditor.cs",
+              "ToolTip": "C:\\Users\\aleja\\Desktop\\Otros\\SQL_launcher\\SqlLauncher\\FrmScheduleEditor.cs",
+              "RelativeToolTip": "SqlLauncher\\FrmScheduleEditor.cs",
+              "ViewState": "AgIAAHAAAAAAAAAAAAAkwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-06T09:29:50.483Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "FrmJobEditor.cs",
+              "DocumentMoniker": "C:\\Users\\aleja\\Desktop\\Otros\\SQL_launcher\\SqlLauncher\\FrmJobEditor.cs",
+              "RelativeDocumentMoniker": "SqlLauncher\\FrmJobEditor.cs",
+              "ToolTip": "C:\\Users\\aleja\\Desktop\\Otros\\SQL_launcher\\SqlLauncher\\FrmJobEditor.cs",
+              "RelativeToolTip": "SqlLauncher\\FrmJobEditor.cs",
+              "ViewState": "AgIAACABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-06T09:29:14.487Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "App.config",
+              "DocumentMoniker": "C:\\Users\\aleja\\Desktop\\Otros\\SQL_launcher\\SqlLauncher\\App.config",
+              "RelativeDocumentMoniker": "SqlLauncher\\App.config",
+              "ToolTip": "C:\\Users\\aleja\\Desktop\\Otros\\SQL_launcher\\SqlLauncher\\App.config",
+              "RelativeToolTip": "SqlLauncher\\App.config",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAAAcAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2026-10-06T09:28:14.253Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "FrmLanzadera.cs [Dise\u00F1o]",
+              "DocumentMoniker": "C:\\Users\\aleja\\Desktop\\Otros\\SQL_launcher\\SqlLauncher\\FrmLanzadera.cs",
+              "RelativeDocumentMoniker": "SqlLauncher\\FrmLanzadera.cs",
+              "ToolTip": "C:\\Users\\aleja\\Desktop\\Otros\\SQL_launcher\\SqlLauncher\\FrmLanzadera.cs [Dise\u00F1o]",
+              "RelativeToolTip": "SqlLauncher\\FrmLanzadera.cs [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-06T09:25:55.078Z",
+              "EditorCaption": " [Dise\u00F1o]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FrmLanzadera.cs",
+              "DocumentMoniker": "C:\\Users\\aleja\\Desktop\\Otros\\SQL_launcher\\SqlLauncher\\FrmLanzadera.cs",
+              "RelativeDocumentMoniker": "SqlLauncher\\FrmLanzadera.cs",
+              "ToolTip": "C:\\Users\\aleja\\Desktop\\Otros\\SQL_launcher\\SqlLauncher\\FrmLanzadera.cs",
+              "RelativeToolTip": "SqlLauncher\\FrmLanzadera.cs",
+              "ViewState": "AgIAAN8AAAAAODMzM7MswBUAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-06T09:25:56.17Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

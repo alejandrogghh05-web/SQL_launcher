@@ -1,0 +1,389 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.SqlServer.Management.XEventDbScoped</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseEventProvider">
+            <summary>
+            Sql provider for Event.
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseEventProvider.GetCreateScript">
+            <summary>
+            Script Create for the Event.
+            </summary>
+            <returns>Event Create script.</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseEventProvider.GetDropScript">
+            <summary>
+            Scripts Drop for this event.
+            </summary>
+            <returns>Event Drop script.</returns>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseSessionProvider">
+            <summary>
+            Sql provider for Session at database scope
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseTargetProvider">
+            <summary>
+            Provider for Target.
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseTargetProvider.GetCreateScript">
+            <summary>
+            Script Create for the Target.
+            </summary>
+            <returns>Target Create script.</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseTargetProvider.GetDropScript">
+            <summary>
+            Scripts Drop for this Target.
+            </summary>
+            <returns>Target Drop script.</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseTargetProvider.GetTargetData">
+            <summary>
+            Gets the target data.
+            </summary>
+            <returns>Target data xml string.</returns>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseTargetProvider.ServerConnection">
+            <summary>
+            Gets the underlying ServerConnection
+            </summary>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore">
+            <summary>
+            XEStore is the root for all metadata classes and runtime classes.
+            </summary>
+        </member>
+        <member name="F:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.TypeTypeName">
+            <summary>
+            Type name.
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.#ctor(Microsoft.SqlServer.Management.Sdk.Sfc.SqlStoreConnection,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore"/> class.
+            </summary>
+            <param name="connection">The connection.</param>
+            <param name="name">Store name.</param>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore"/> class.
+            This constructor is only used to support serialization. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.#ctor(Microsoft.SqlServer.Management.Sdk.Sfc.SqlStoreConnection)">
+            <summary>
+            Constructs a new DatabaseXEStore instance whose name is the same as the current active database
+            </summary>
+            <param name="connection"></param>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.ToString">
+            <summary>
+            Produces a string representing the store.
+            </summary>
+            <returns>A string representing the store.</returns>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.IdentityKey">
+            <summary>
+            Returns the key associated with the store.
+            </summary>
+            <returns>The key associated with the store.</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.Microsoft#SqlServer#Management#Sdk#Sfc#ISfcHasConnection#GetConnection">
+            <summary>
+            Get the current connection to query on.
+            Return a connection supporting a single serial query, so the query must end before another one may begin.
+            </summary>
+            <returns>The connection to use.</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.Microsoft#SqlServer#Management#Sdk#Sfc#ISfcHasConnection#SetConnection(Microsoft.SqlServer.Management.Common.ISfcConnection)">
+            <summary>
+            Sets the active connection.
+            </summary>
+            <param name="connection">Connection to use.</param>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.Microsoft#SqlServer#Management#Sdk#Sfc#ISfcHasConnection#GetConnection(Microsoft.SqlServer.Management.Sdk.Sfc.SfcObjectQueryMode)">
+            <summary>
+            Get the current connection to query on.
+            Return a connection supporting either a single serial query or multiple simultaneously open queries as requested.
+            </summary>
+            <param name="mode">Query mode.</param>
+            <returns>The connection to use, or null to use Cache mode. Cache mode avoids connection and open data reader issues.</returns>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.Microsoft#SqlServer#Management#Sdk#Sfc#ISfcHasConnection#ConnectionContext">
+            <summary>
+            Gets connection context.
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.Microsoft#SqlServer#Management#Sdk#Sfc#ISfcDomain#GetType(System.String)">
+            <summary>
+            Gets the type.
+            </summary>
+            <param name="typeName">Name of the type.</param>
+            <returns>Type correspoding to the given name.</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.Microsoft#SqlServer#Management#Sdk#Sfc#ISfcDomain#GetKey(Microsoft.SqlServer.Management.Sdk.Sfc.IUrnFragment)">
+            <summary>
+            Returns a Key object given a Urn fragment.
+            </summary>
+            <param name="urnFragment">A urn fragment.</param>
+            <returns>An <see cref="T:Microsoft.SqlServer.Management.Sdk.Sfc.SfcKey"/> for given Urn fragment.</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.Microsoft#SqlServer#Management#Sdk#Sfc#ISfcDomain#GetExecutionEngine">
+            <summary>
+            Gets the execution engine.
+            </summary>
+            <returns>The execution engine to use.</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.Microsoft#SqlServer#Management#Sdk#Sfc#ISfcDomainLite#GetLogicalVersion">
+            <summary>
+            Returns the logical version of the domain.
+            </summary>
+            <returns>The logical version of the domain.</returns>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.Microsoft#SqlServer#Management#Sdk#Sfc#ISfcDomainLite#DomainName">
+            <summary>
+            Gets the name of the domain.
+            </summary>
+            <value>The name of the domain.</value>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.Microsoft#SqlServer#Management#Sdk#Sfc#ISfcDomainLite#DomainInstanceName">
+            <summary>
+            Gets the name of the domain instance.
+            </summary>
+            <value>The name of the domain instance.</value>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.Name">
+            <summary>
+            Gets the name of XEStore.
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.ServerName">
+            <summary>
+            Gets ServerName for the store.
+            </summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.CreateIdentityKey">
+            <summary>
+            Creates a key identifying the store.
+            </summary>
+            <returns>A key identifying the store.</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.GetStoreProvider">
+            <summary>
+            Gets provider to perform operations on the Store.
+            </summary>
+            <returns>The provider to use.</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.GetSessionProivder(Microsoft.SqlServer.Management.XEvent.Session)">
+            <summary>
+            Gets provider to perform Session operations.
+            </summary>
+            <param name="session">A session to use.</param>
+            <returns>The provider to use.</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.GetTargetProvider(Microsoft.SqlServer.Management.XEvent.Target)">
+            <summary>
+            Gets provider to perform Target operations.
+            </summary>
+            <param name="target">A target to use.</param>
+            <returns>The provider to use.</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStore.GetEventProvider(Microsoft.SqlServer.Management.XEvent.Event)">
+            <summary>
+            Gets provider to perform Event operations.
+            </summary>
+            <param name="xevent">An event to use.</param>
+            <returns>The provider to use.</returns>
+        </member>
+        <member name="T:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStoreProvider">
+            <summary>
+            Sql provider for the DatabaseXEStore.
+            </summary>    
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStoreProvider.GetExecutionEngine">
+            <summary>
+            Gets an execution engine associated with Store's connection.
+            </summary>
+            <returns>Execution engine.</returns>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStoreProvider.GetConnection(Microsoft.SqlServer.Management.Sdk.Sfc.SfcObjectQueryMode)">
+            <summary>
+            Get the current connection to query on.
+            Return a connection supporting either a single serial query or multiple simultaneously open queries as requested.
+            </summary>
+            <param name="mode">Query mode.</param>
+            <returns>The connection to use, or null to use Cache mode. Cache mode avoids connection and open data reader issues.</returns>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStoreProvider.DomainInstanceName">
+            <summary>
+            Gets the name of the domain instance.
+            </summary>
+            <value>The name of the domain instance.</value>        
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStoreProvider.GetComparer">
+            <summary>
+             Gets a comparer for the child collections.
+            </summary>
+            <returns>Requested comparer.</returns>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.DatabaseXEStoreProvider.ServerConnection">
+            <summary>
+            Gets the underlying ServerConnection
+            </summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.NoSuchCollection">
+            <summary>The collection '{name}' does not exist.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FormatNoSuchCollection(System.Object)">
+            <summary>The collection '{name}' does not exist.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.UnsupportedKey">
+            <summary>Cannot create key for object of type '{key}'.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FormatUnsupportedKey(System.Object)">
+            <summary>Cannot create key for object of type '{key}'.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.UnsupportedConnectionType">
+            <summary>The connection type '{type}' is not supported. Use a SqlStoreConnection or ServerConnection object instead.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FormatUnsupportedConnectionType(System.Object)">
+            <summary>The connection type '{type}' is not supported. Use a SqlStoreConnection or ServerConnection object instead.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.SqlExecutionFailure">
+            <summary>Failed to execute Transact-SQL statement '{sql}'.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FormatSqlExecutionFailure(System.Object)">
+            <summary>Failed to execute Transact-SQL statement '{sql}'.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FileAlreadyExists">
+            <summary>The file already exists. You must specify a different name.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FileNotExist">
+            <summary>The file does not exist.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.ChangeNameForExistingSession">
+            <summary>To change the name of an existing session, you must drop and re-create the session.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.ChangePropertyForExistingEvent">
+            <summary>To change the property '{propertyName}' for an existing event, drop the event, and then add the event by using the ALTER EVENT SESSION DDL statement.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FormatChangePropertyForExistingEvent(System.Object)">
+            <summary>To change the property '{propertyName}' for an existing event, drop the event, and then add the event by using the ALTER EVENT SESSION DDL statement.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.NewSessionMustContainEvent">
+            <summary>Cannot create a session without any events.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.InvalidParameter">
+            <summary>The parameter '{param}' is invalid.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FormatInvalidParameter(System.Object)">
+            <summary>The parameter '{param}' is invalid.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.ParentNull">
+            <summary>The parent XEStore cannot be null.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.NameNullEmpty">
+            <summary>The Name property cannot be null or an empty string.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.CannotSetNameForExistingObject">
+            <summary>You cannot change the Name property for an existing object.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.Expression2NotNull">
+            <summary>The second expression must be null for a NOT logical expression.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.InvalidProperty">
+            <summary>The property setting is invalid.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.PackageNotExist">
+            <summary>The package '{name}' does not exist.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FormatPackageNotExist(System.Object)">
+            <summary>The package '{name}' does not exist.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.ObjectNotExist">
+            <summary>The object '{name}' does not exist.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FormatObjectNotExist(System.Object)">
+            <summary>The object '{name}' does not exist.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.CannotAddActionToExistingEvent">
+            <summary>You cannot add the action to an existing event. You must drop the event, and then add the event with the action.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.CannotChangeFieldForExistingEvent">
+            <summary>You cannot change the field values for an existing event. You must drop the event, and then add the event with the field.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.CannotChangeFieldForExistingTarget">
+            <summary>You cannot change the field values for an existing target. You must drop the target, and then add the target with the field.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.CannotSetEventInfoForExistingEvent">
+            <summary>You cannot change the EventInfo object for an existing event.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.CannotSetTargetInfoForExistingTarget">
+            <summary>You cannot change the TargetInfo object for an existing target.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.CannotSetActionInfoForExistingAction">
+            <summary>You cannot change the ActionInfo object for an existing action.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.SaveTemplateForExistingSession">
+            <summary>You can only invoke the SaveSessionToTemplate method on an existing session. Call the Session.Create method to validate the session.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.PackageNameNotUnique">
+            <summary>The package name '{name}' is not unique. You must use a fully-qualified name, in the format '[module_guid].package_name'.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FormatPackageNameNotUnique(System.Object)">
+            <summary>The package name '{name}' is not unique. You must use a fully-qualified name, in the format '[module_guid].package_name'.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.ObjectNameNotUnique">
+            <summary>The object name '{name}' is not unique. You must use a fully-qualified name, in the format '[module_guid].package_name.object_name'.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FormatObjectNameNotUnique(System.Object)">
+            <summary>The object name '{name}' is not unique. You must use a fully-qualified name, in the format '[module_guid].package_name.object_name'.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.UnknownType">
+            <summary>Unknown type.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.NoBlockingEventNotAllowedInNoEventLossSession">
+            <summary>Events with "NO_BLOCK" capability cannot be added to a session with a "NO_EVENT_LOSS" event retention mode. Therefore, event '{eventName}' cannot be added to session {sessionName}.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FormatNoBlockingEventNotAllowedInNoEventLossSession(System.Object,System.Object)">
+            <summary>Events with "NO_BLOCK" capability cannot be added to a session with a "NO_EVENT_LOSS" event retention mode. Therefore, event '{eventName}' cannot be added to session {sessionName}.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.InvalidState">
+            <summary>You cannot perform this operation on an object in state '{current_state}'. The object must be in state '{required_state}'.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FormatInvalidState(System.Object,System.Object)">
+            <summary>You cannot perform this operation on an object in state '{current_state}'. The object must be in state '{required_state}'.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.AlterValidationFailure">
+            <summary>Session validation for the alter operation failed.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.CannotReadTargetData">
+            <summary>Cannot read target data. Please check session and target status.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.ActionNameNotUnique">
+            <summary>Action {name} already exists in the session and cannot be added again.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FormatActionNameNotUnique(System.Object)">
+            <summary>Action {name} already exists in the session and cannot be added again.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.InvalidConnectionType">
+            <summary>Connection type is not valid.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.InvalidVersion">
+            <summary>Operation not supported on version {version}.</summary>
+        </member>
+        <member name="M:Microsoft.SqlServer.Management.XEventDbScoped.ExceptionTemplates.FormatInvalidVersion(System.Object)">
+            <summary>Operation not supported on version {version}.</summary>
+        </member>
+        <member name="P:Microsoft.SqlServer.Management.XEventDbScoped.XsdResource.xeconfig1">
+            <summary>..\XEvent\xeconfig.xsd;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</summary>
+        </member>
+    </members>
+</doc>
